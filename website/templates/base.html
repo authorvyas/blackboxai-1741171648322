@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Prabhat's Workspace{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+    <script>
+        // Handle image loading errors
+        function handleImageError(img) {
+            img.onerror = null;
+            img.parentElement.classList.add('error');
+            img.src = '';
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <h1 class="text-3xl font-bold">
+                    <a href="{{ url_for('index') }}" class="hover:text-blue-200 transition-colors">
+                        Prabhat's Workspace
+                    </a>
+                </h1>
+                <nav>
+                    <ul class="flex space-x-6">
+                        <li><a href="{{ url_for('index') }}" class="hover:text-blue-200 transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-blue-200 transition-colors">About Us</a></li>
+                        <li><a href="#contact" class="hover:text-blue-200 transition-colors">Contact Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mx-auto px-4 mt-4">
+                {% for category, message in messages %}
+                    <div class="{% if category == 'error' %}bg-red-100 border-red-500 text-red-700{% else %}bg-blue-100 border-blue-500 text-blue-700{% endif %} border-l-4 p-4 mb-4 fade-in" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="fade-in">
+                    <h3 class="text-xl font-semibold mb-4">About Us</h3>
+                    <p class="text-gray-400">{{ about.content if about else 'Welcome to Prabhat\'s Workspace' }}</p>
+                </div>
+                <div class="fade-in">
+                    <h3 class="text-xl font-semibold mb-4">Contact Us</h3>
+                    <p class="text-gray-400">{{ contact.content if contact else 'Contact information coming soon' }}</p>
+                </div>
+                <div class="fade-in">
+                    <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="{{ url_for('index') }}" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#contact" class="hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="{{ url_for('admin_login') }}" class="hover:text-white transition-colors">Admin Login</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; {{ year if year else '2024' }} Prabhat's Workspace. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+            class="fixed bottom-8 right-8 bg-blue-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors">
+        <span class="sr-only">Back to top</span>
+        <i class="fas fa-arrow-up"></i>
+    </button>
+</body>
+</html>
